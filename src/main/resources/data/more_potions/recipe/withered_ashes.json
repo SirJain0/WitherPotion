@@ -6,7 +6,7 @@
     }
   ],
   "result": {
-    "item": "wither_potions:withered_ashes",
-    "count": 8
+    "item": "more_potions:withered_ashes",
+    "id": 8
   }
 }

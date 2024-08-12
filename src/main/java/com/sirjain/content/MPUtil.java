@@ -1,7 +1,7 @@
 package com.sirjain.content;
 
 import com.sirjain.MPMain;
-import com.sirjain.mixin.BrewingRecipeRegistryMixin;
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -10,16 +10,17 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
 public class MPUtil {
-        public static Potion WITHER_POTION, LONG_WITHER_POTION, STRONG_WITHER_POTION;
-        public static Potion HUNGER_POTION, LONG_HUNGER_POTION, STRONG_HUNGER_POTION;
-        public static Potion LEVITATING_POTION, LONG_LEVITATING_POTION, STRONG_LEVITATING_POTION;
+        public static RegistryEntry<Potion> WITHER_POTION, LONG_WITHER_POTION, STRONG_WITHER_POTION;
+        public static RegistryEntry<Potion> HUNGER_POTION, LONG_HUNGER_POTION, STRONG_HUNGER_POTION;
+        public static RegistryEntry<Potion> LEVITATING_POTION, LONG_LEVITATING_POTION, STRONG_LEVITATING_POTION;
 
-        public static StatusEffect WITHER = StatusEffects.WITHER;
-        public static StatusEffect HUNGER = StatusEffects.HUNGER;
-        public static StatusEffect LEVITATION = StatusEffects.LEVITATION;
+        public static RegistryEntry<StatusEffect> WITHER = StatusEffects.WITHER;
+        public static RegistryEntry<StatusEffect> HUNGER = StatusEffects.HUNGER;
+        public static RegistryEntry<StatusEffect> LEVITATION = StatusEffects.LEVITATION;
 
         // Registers potions
         public static void registerPotions() {
@@ -37,25 +38,23 @@ public class MPUtil {
         }
 
         // Registers potion recipes
-        public static void addRecipes() {
-                BrewingRecipeRegistryMixin.addRecipe(Potions.AWKWARD, MPItems.WITHERED_ASHES, WITHER_POTION);
-                BrewingRecipeRegistryMixin.addRecipe(WITHER_POTION, Items.REDSTONE, LONG_WITHER_POTION);
-                BrewingRecipeRegistryMixin.addRecipe(LONG_WITHER_POTION, Items.GLOWSTONE_DUST, STRONG_WITHER_POTION);
+        public static void registerRecipes() {
+                FabricBrewingRecipeRegistryBuilder.BUILD.register((recipes -> {
+                        recipes.registerPotionRecipe(Potions.AWKWARD, MPItems.WITHERED_ASHES, WITHER_POTION);
+                        recipes.registerPotionRecipe(WITHER_POTION, Items.REDSTONE, LONG_WITHER_POTION);
+                        recipes.registerPotionRecipe(LONG_WITHER_POTION, Items.GLOWSTONE_DUST, STRONG_WITHER_POTION);
 
-                BrewingRecipeRegistryMixin.addRecipe(Potions.WATER, Items.ROTTEN_FLESH, HUNGER_POTION);
-                BrewingRecipeRegistryMixin.addRecipe(HUNGER_POTION, Items.REDSTONE, LONG_HUNGER_POTION);
-                BrewingRecipeRegistryMixin.addRecipe(LONG_HUNGER_POTION, Items.GLOWSTONE_DUST, STRONG_HUNGER_POTION);
-
-                BrewingRecipeRegistryMixin.addRecipe(Potions.LEAPING, Items.SHULKER_SHELL, LEVITATING_POTION);
-                BrewingRecipeRegistryMixin.addRecipe(LEVITATING_POTION, Items.REDSTONE, LONG_LEVITATING_POTION);
-                BrewingRecipeRegistryMixin.addRecipe(LONG_LEVITATING_POTION, Items.GLOWSTONE_DUST, STRONG_LEVITATING_POTION);
+                        recipes.registerPotionRecipe(Potions.WATER, Items.ROTTEN_FLESH, HUNGER_POTION);
+                        recipes.registerPotionRecipe(HUNGER_POTION, Items.REDSTONE, LONG_HUNGER_POTION);
+                        recipes.registerPotionRecipe(LONG_HUNGER_POTION, Items.GLOWSTONE_DUST, STRONG_HUNGER_POTION);
+                }));
         }
 
         // Helper method to shorten process of registering potions
-        private static Potion registerPotion(String name, Potion potion) {
-                return Registry.register(
+        private static RegistryEntry<Potion> registerPotion(String name, Potion potion) {
+                return Registry.registerReference(
                         Registries.POTION,
-                        new Identifier(MPMain.MOD_ID, name),
+                        Identifier.of(MPMain.MOD_ID, name),
                         potion
                 );
         }

@@ -15,7 +15,7 @@ public class MPItems {
         public static void registerItems() {
                 WITHERED_ASHES = Registry.register(
                         Registries.ITEM,
-                        new Identifier(MPMain.MOD_ID, "withered_ashes"),
+                        Identifier.of(MPMain.MOD_ID, "withered_ashes"),
                         new Item(new Item.Settings())
                 );
 

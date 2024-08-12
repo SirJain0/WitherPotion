@@ -17,6 +17,6 @@ public class MPMain implements ModInitializer {
 
 		MPItems.registerItems();
 		MPUtil.registerPotions();
-		MPUtil.addRecipes();
+		MPUtil.registerRecipes();
 	}
 }
